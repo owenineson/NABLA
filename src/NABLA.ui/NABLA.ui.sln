@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31410.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NABLA.ui", "NABLA.ui.csproj", "{D645F3FA-0967-4E30-86C0-CA2DD14CBD48}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D645F3FA-0967-4E30-86C0-CA2DD14CBD48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D645F3FA-0967-4E30-86C0-CA2DD14CBD48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D645F3FA-0967-4E30-86C0-CA2DD14CBD48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D645F3FA-0967-4E30-86C0-CA2DD14CBD48}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {25514164-A555-41A5-94B2-154D4E83DB9F}
+	EndGlobalSection
+EndGlobal
