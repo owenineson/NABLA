@@ -85,7 +85,13 @@ namespace NABLA.sim
                             //if a valid componenet, increments its respective counter
                             BranchCount++;
                             RLCCount++;
+                            //special case to increment inductors
+                            if (FirstCharacter(SplitList[ListLineNumber][0]) == "L")
+                            {
+                                InductorCount++;
+                            }
                             break;
+
                         case "V":
                             if(SplitList[ListLineNumber].Length != 4)
                             {
@@ -95,6 +101,7 @@ namespace NABLA.sim
                             BranchCount++;
                             VoltageSourceCount++;
                             break;
+
                         case "I":
                             if(SplitList[ListLineNumber].Length != 4)
                             {
