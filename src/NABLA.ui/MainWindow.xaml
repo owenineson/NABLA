@@ -7,6 +7,20 @@
         mc:Ignorable="d"
         Title="Nabla" Height="450" Width="800" WindowStartupLocation="CenterScreen" WindowState="Maximized" Icon="Nabla_Symbol.png">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="185*"/>
+            <RowDefinition Height="6*"/>
+        </Grid.RowDefinitions>
+        <StatusBar x:Name="StatusBar_MainStatus" Height="13" Margin="0,0,10.2,-0.2" VerticalAlignment="Bottom" MinWidth="800" Grid.Row="1"/>
+        <Menu x:Name="Menu_MasterControl" Height="18" VerticalAlignment="Top" MinWidth="800">
+            <MenuItem x:Name="MenuItem_MasterControl_File" Header=" File&#xD;&#xA;" Height="18" Width="40" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <MenuItem x:Name="MenuItem_MasterControl_Edit" Header="Edit" Height="18" Width="40"/>
+            <MenuItem x:Name="MenuItem_MasterControl_View" Header="View" Height="18" Width="40"/>
+            <MenuItem x:Name="MenuItem_MasterControl_Tools" Header="Tools" Height="18" Width="45"/>
+            <MenuItem x:Name="MenuItem_MasterControl_Help" Header="Help" Height="18" Width="40"/>
+        </Menu>
+        <ToolBar x:Name="ToolBar_MainToolBar" Margin="0,18,0.2,0" MinWidth="680" Height="27" VerticalAlignment="Top" Width="635" HorizontalAlignment="Right">
+            <Button Content="Button" VerticalAlignment="Stretch" Width="75" Margin="0,1,0,-1"/>
+        </ToolBar>
     </Grid>
 </Window>
