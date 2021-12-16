@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
-using System.Collections.Generic;
-using System.Collections;
 
 namespace NABLA.sim
 {
@@ -10,7 +10,7 @@ namespace NABLA.sim
     {
         static void Main(string[] args)
         {
-            
+
             static string FirstCharacter(string Input)
             {
                 return Input.Substring(0, 1);
@@ -30,7 +30,7 @@ namespace NABLA.sim
                 }
 
             }
-            
+
             static string[] PreprocessFile(string[] FileArray)
             {
                 //Establish a regex to filter comments (starts with * or ;) and surplus spice commands (starts with .)
@@ -65,7 +65,7 @@ namespace NABLA.sim
                 int RLCCount = 0;
                 int VoltageSourceCount = 0;
                 int CurrentSourceCount = 0;
-                
+
                 //for some reason inductors are also counted independently...
                 int InductorCount = 0;
 
@@ -77,7 +77,7 @@ namespace NABLA.sim
                     {
                         case "R" or "L" or "C":
                             //quick error check for the write number of parameters in a branch
-                            if(SplitList[ListLineNumber].Length != 4)
+                            if (SplitList[ListLineNumber].Length != 4)
                             {
                                 Console.WriteLine(String.Format("Invalid number of parameters on branch {0}. Should be 4", ListLineNumber));
                                 break;
@@ -93,7 +93,7 @@ namespace NABLA.sim
                             break;
 
                         case "V":
-                            if(SplitList[ListLineNumber].Length != 4)
+                            if (SplitList[ListLineNumber].Length != 4)
                             {
                                 Console.WriteLine(String.Format("Invalid number of parameters on branch {0}. Should be 4", ListLineNumber));
                                 break;
@@ -103,7 +103,7 @@ namespace NABLA.sim
                             break;
 
                         case "I":
-                            if(SplitList[ListLineNumber].Length != 4)
+                            if (SplitList[ListLineNumber].Length != 4)
                             {
                                 Console.WriteLine(String.Format("Invalid number of parameters on branch {0}. Should be 4", ListLineNumber));
                                 break;
@@ -113,10 +113,10 @@ namespace NABLA.sim
                             break;
                     }
                 }
-                
 
                 //return as a string array
                 return FilteredList.ToArray();
+
             }
 
             static Hashtable GenerateRLC(String[] ElementText)
@@ -133,7 +133,37 @@ namespace NABLA.sim
                 }
                 catch (Exception)
                 {
-                    
+
+                }
+                //and finally the value to a float
+                try
+                {
+                    Element.Add("Value", float.Parse(ElementText[3]));
+                }
+                catch (Exception)
+                {
+
+                    throw new Exception("Invalid input");
+                }
+
+                return Element;
+            }
+
+            static Hashtable GenerateIndependentSource(String[] ElementText)
+            {
+                //gonna each element from its string array into a hashtable
+                Hashtable Element = new Hashtable();
+                //start with the type of the element
+                Element.Add("Element", ElementText[0]);
+                //Now to add the two nodes, these need to be flipped into ints so a bit of validation is in order
+                try
+                {
+                    Element.Add("PNode", int.Parse(ElementText[1]));
+                    Element.Add("NNode", int.Parse(ElementText[2]));
+                }
+                catch (Exception)
+                {
+
                 }
                 //and finally the value to a float
                 try
@@ -154,7 +184,7 @@ namespace NABLA.sim
 
             }
 
-            
+
 
             String[] FileArray;
             string FilePath = @"C:\\Users\\owen\\Documents\\NABLA\\src\\NABLA.sim\\ExampleNetlist.txt";
