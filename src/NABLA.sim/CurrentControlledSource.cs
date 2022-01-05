@@ -9,8 +9,6 @@ namespace NABLA.sim
     class CurrentControlledSource : Connector
     {
         protected float Value;
-        protected int Node1;
-        protected int Node2;
         protected string VNAM;
     }
 }

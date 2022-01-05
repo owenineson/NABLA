@@ -9,7 +9,15 @@ namespace NABLA.sim
     class VoltageControlledSource : Connector
     {
         protected float Value;
-        protected int Node1;
-        protected int Node2;
+        protected int _pNode
+        {
+            get => _pNode;
+            set => _pNode = value;
+        }
+        protected int _nNode
+        {
+            get => _nNode;
+            set => _nNode = value;
+        }
     }
 }
