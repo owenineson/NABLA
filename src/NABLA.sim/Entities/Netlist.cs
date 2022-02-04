@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace NABLA.sim
 {
     /// <summary>
-    /// A validated netlist
+    /// A netlist describing a circuit
     /// </summary>
     internal class Netlist
     {
@@ -18,7 +18,13 @@ namespace NABLA.sim
         /// </summary>
         private string _filePath;
 
+        /// <summary>
+        /// Backing field for NetlistLineArray
+        /// </summary>
         private string[][] _netlistLineArray;
+        /// <summary>
+        /// A Netlist split into lines and then by spaces
+        /// </summary>
         public string[][] NetlistLineArray
         {
             get { return _netlistLineArray; }
@@ -30,7 +36,8 @@ namespace NABLA.sim
         Regex CommentFilterRegex = new Regex(@"[\*\;\.]");
 
         //TODO: this is super messy and needs a load more validation, also this just defo shouldnt all be in the constructor
-        //could probably split validation and filtering out into another function just for the sake of modularity as well
+        //TODO: could probably split validation and filtering out into another function just for the sake of modularity as well
+        //TODO: build in refrencing to the TypeDescriptions document
         /// <summary>
         /// Creates a new instance of a netlist
         /// </summary>

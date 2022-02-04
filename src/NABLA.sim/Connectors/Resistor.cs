@@ -8,14 +8,17 @@ using System.Text.RegularExpressions;
 namespace NABLA.sim
 {
     /// <summary>
-    /// A circuit element of type Resistor, Inductor or Capacitor
+    /// A purely ohmic resistor
     /// </summary>
     class Resistor : Connector
     {
 
         /// <summary>
-        /// Instantiate a new RLC object
+        /// Create a new resistor
         /// </summary>
+        /// <param name="Name">The name of the connector</param>
+        /// <param name="Value">The value for resistance</param>
+        /// <param name="Nodes">A list of nodes the resistor is connected between</param>
         public Resistor(string Name, double Value, List<string> Nodes)
         {
             _type = "Resistor";
