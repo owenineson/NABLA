@@ -1,0 +1,11 @@
+﻿<types>
+	<type type="Resistor">
+		<parameter name="Resistance"/>
+	</type>
+	<type type="Capacitor">
+		<parameter name ="Capacitance"/>
+	</type>
+	<type type="Inductor">
+		<parameter name ="Inductor"/>
+	</type>
+</types>

@@ -19,8 +19,10 @@
             <MenuItem x:Name="MenuItem_MasterControl_Tools" Header="Tools" Height="18" Width="45"/>
             <MenuItem x:Name="MenuItem_MasterControl_Help" Header="Help" Height="18" Width="40"/>
         </Menu>
-        <ToolBar x:Name="ToolBar_MainToolBar" Margin="0,18,0.2,0" MinWidth="680" Height="27" VerticalAlignment="Top" Width="635" HorizontalAlignment="Right">
+        <ToolBar x:Name="ToolBar_MainToolBar" Margin="0,18,0,0" MinWidth="680" Height="27" VerticalAlignment="Top" Width="675" HorizontalAlignment="Right">
             <Button Content="Button" VerticalAlignment="Stretch" Width="75" Margin="0,1,0,-1"/>
         </ToolBar>
+        <ScrollViewer Margin="0,18,680,0"/>
     </Grid>
+
 </Window>
