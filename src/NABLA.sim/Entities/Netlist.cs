@@ -107,8 +107,8 @@ namespace NABLA.sim
                 }
             }
 
-            String[][] SplitNetlistLines = new string[FilteredNetlist.Count() - 1][];
-            for (int i = 0; i < (FilteredNetlist.Count - 1); i++)
+            String[][] SplitNetlistLines = new string[FilteredNetlist.Count()][];
+            for (int i = 0; i < FilteredNetlist.Count; i++)
             {
                 SplitNetlistLines[i] = FilteredNetlist[i].Split(" ");
             }

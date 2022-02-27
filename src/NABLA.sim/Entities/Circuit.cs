@@ -24,7 +24,13 @@ namespace NABLA.sim
         /// <summary>
         /// A list of all the nodes in the circuit
         /// </summary>
-        private List<string> _nodes = new List<string>();
+        private List<int> _nodes = new List<int>();
+        
+        /// <summary>
+        /// Nodes as abstracted numbers
+        /// </summary>
+        private List<int> _intNodes = new List<int>();
+
 
         /// <summary>
         /// Create a new instance of a circuit, used for holding connectors
@@ -68,7 +74,7 @@ namespace NABLA.sim
             _connectorCounts[item.GetConnectorType()] += 1;
 
             //Go through each node for the connector and add it if its a new one
-            foreach (string node in item.GetNodes())
+            foreach (int node in item.GetNodes())
             {
                 if (_nodes.Contains(node) == false)
                 {
@@ -140,9 +146,24 @@ namespace NABLA.sim
         /// Get the list of nodes in the circuit
         /// </summary>
         /// <returns>A List of strings naming each node</returns>
-        public List<string> GetNodes()
+        public List<int> GetNodes()
         {
             return _nodes;
         }
+
+        /// <summary>
+        /// Return an enumerable dictionary of connectors
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<string, Connector>.Enumerator GetEnumerator()
+        {
+            return _entities.GetEnumerator();
+        }
+
+        public Dictionary<string, Connector> GetEntities()
+        {
+            return _entities;
+        }
+
     }
 }

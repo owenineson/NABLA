@@ -19,7 +19,7 @@ namespace NABLA.sim
         /// <param name="Name">The name of the connector</param>
         /// <param name="Value">The value for resistance</param>
         /// <param name="Nodes">A list of nodes the resistor is connected between</param>
-        public Resistor(string Name, double Value, List<string> Nodes)
+        public Resistor(string Name, double Value, List<int> Nodes)
         {
             _type = "Resistor";
             _name = Name;

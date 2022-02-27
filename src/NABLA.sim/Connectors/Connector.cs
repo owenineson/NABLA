@@ -26,7 +26,7 @@ namespace NABLA.sim
         /// <summary>
         /// A list of nodes the connector is connected between
         /// </summary>
-        protected List<string> _nodes;
+        protected List<int> _nodes;
 
         /// <summary>
         /// Get the type of the connector (i.e. resistor, capacitor)
@@ -42,10 +42,10 @@ namespace NABLA.sim
         /// </summary>
         /// <param name="Nodes">A list of node names</param>
         /// <returns>True if succsesful</returns>
-        public bool ConnectNodes(List<string> Nodes)
+        public bool ConnectNodes(List<int> Nodes)
         {
-            _nodes = new List<string>();
-            foreach (string node in Nodes)
+            _nodes = new List<int>();
+            foreach (int node in Nodes)
             {
                 _nodes.Add(node);
             }
@@ -82,7 +82,7 @@ namespace NABLA.sim
         /// Gets this list of nodes the connector is between
         /// </summary>
         /// <returns>A list of strings of each node name</returns>
-        public List<string> GetNodes()
+        public List<int> GetNodes()
         {
             return _nodes;
         }

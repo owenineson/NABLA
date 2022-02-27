@@ -17,11 +17,31 @@ namespace NABLA.sim
                 switch (LineArray[LineNumber][0].Substring(0, 1))
                 {
                     case "R" or "L" or "C":
-                        c.Add(new Resistor(LineArray[LineNumber][0], Convert.ToDouble(LineArray[LineNumber][3]), new List<string>(){LineArray[LineNumber][1], LineArray[LineNumber][2] }));
+                        c.Add(
+                            // The name of the element
+                            new Resistor(LineArray[LineNumber][0], 
+                            // The value of the element
+                            Convert.ToDouble(LineArray[LineNumber][3]), 
+                            // A list of the nodes for the element
+                            new List<int>()
+                            {
+                                Int32.Parse(LineArray[LineNumber][1]), 
+                                Int32.Parse(LineArray[LineNumber][2]) 
+                            }));
                         break;
 
                     case "V":
-                        c.Add(new IndependentSource(LineArray[LineNumber][0], Convert.ToDouble(LineArray[LineNumber][3]), new List<string>() { LineArray[LineNumber][1], LineArray[LineNumber][2] }));
+                        c.Add(
+                            // The name of the element
+                            new Resistor(LineArray[LineNumber][0],
+                            // The value of the element
+                            Convert.ToDouble(LineArray[LineNumber][3]),
+                            // A list of the nodes for the element
+                            new List<int>()
+                            {
+                                Int32.Parse(LineArray[LineNumber][1]),
+                                Int32.Parse(LineArray[LineNumber][2])
+                            }));
                         break;
 
                     case "I":
@@ -44,7 +64,7 @@ namespace NABLA.sim
             string[][] LineArray = simpleNetlist.NetlistLineArray;
             
             //whack the array out onto the console
-            for (int y = 0; y < LineArray.GetLength(0); y++)
+            for (int y = 0; y < LineArray.Length; y++)
             {
                 for (int x = 0; x < LineArray[y].Length; x++)
                 {
@@ -60,18 +80,37 @@ namespace NABLA.sim
                 switch (item[0].Substring(0, 1))
                 {
                     case "R":
-                        c.Add(new Resistor(item[0], Convert.ToDouble(item[3]), new List<string>() { item[1], item[2]}));
+                        c.Add(
+                            new Resistor(item[0], 
+                            Convert.ToDouble(item[3]), 
+                            new List<int>() 
+                            { 
+                                Int32.Parse(item[1]), 
+                                Int32.Parse(item[2]) 
+                            }));
                         break;
-
+                   //TODO: feels a bit janky to be casting to int right here     
                     case "V":
-                        c.Add(new IndependentSource(item[0], Convert.ToDouble(item[3]), new List<string>() { item[1], item[2] }));
+                        c.Add(
+                            new IndependentSource(item[0], 
+                            Convert.ToDouble(item[3]), 
+                            new List<int>() 
+                            { 
+                                Int32.Parse(item[1]), 
+                                Int32.Parse(item[2]) 
+                            }));
                         break;
 
                     default:
                         break;
                 }
             }
+
             
+            ModfiedNodalAnalysis mna = new ModfiedNodalAnalysis(c);
+            
+            Console.WriteLine(mna.Solve().ToString());
+
             Console.ReadLine();
 
         }

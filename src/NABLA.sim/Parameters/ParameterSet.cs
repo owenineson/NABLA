@@ -34,7 +34,8 @@ namespace NABLA.sim
         /// <returns>A double of the parameter value</returns>
         public double GetParameter(string Parameter)
         {
-            return _parameters[Parameter];
+            double value = _parameters[Parameter];
+            return value;
         }
 
         /// <summary>

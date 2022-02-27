@@ -15,7 +15,7 @@ namespace NABLA.sim
         /// <summary>
         /// Create a new Independent Source
         /// </summary>
-        public IndependentSource(string Name, double Value, List<string> Nodes)
+        public IndependentSource(string Name, double Value, List<int> Nodes)
         {
             _type = "IndependentSource";
             _name = Name;
