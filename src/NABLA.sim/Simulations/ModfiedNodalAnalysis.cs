@@ -460,6 +460,5 @@ namespace NABLA.sim
             matrix = _aMatrix.Inverse() * _zMatrix;
             return matrix;
         }
-
     }
 }
