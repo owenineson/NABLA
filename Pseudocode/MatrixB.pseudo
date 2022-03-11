@@ -1,0 +1,62 @@
+function buildMatrixB(circuit c) {
+    
+    Matrix matrixB = new SparseMatrix(c.GetNodeCount(), c.GetCurrentUnknownCount())
+    sourceNumber = 0
+
+    foreach (element in c.GetEnumerator()){
+
+        node1 = c.GetNodes(0)
+        node2 = c.GetNodes(1)
+
+        switch element.GetName()[0]{
+            case "V":
+              if (c.GetNodeCount() > 1){
+                if (node1 != 0){
+                    matrixB[node1 - 1, sourceNumber] = 1
+                }
+                
+                if (node2 != 0){
+                    matrixB[node2 - 1, sourceNumber] = -1
+                }
+              }
+              
+              else{
+                  if (node1 != 0){
+                      matrixB[node1 - 1] = 1
+                  }
+                  if (node2 != 0){
+                      matrixB[node2 - 1] = -1
+                  }
+              }
+              
+              sourceNumber++
+              break
+        
+            case "L":
+                if (c.GetNodeCount() > 1){
+                    if (node1 != 0){
+                        matrixB[node1 - 1, sourceNumber] = 1
+                    }
+                    
+                    if (node2 != 0){
+                        matrixB[node2 - 1, sourceNumber] = -1
+                    }
+                }
+                
+                else{
+                    if (node1 != 0){
+                        matrixB[node1 - 1] = 1
+                    }
+                    if (node2 != 0){
+                        matrixB[node2 - 1] = -1
+                    }
+                }
+                
+                sourceNumber++
+                break
+        }
+    }
+
+    return matrixB
+
+}
