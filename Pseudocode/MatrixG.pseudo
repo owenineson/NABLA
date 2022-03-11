@@ -1,0 +1,60 @@
+function buildMatrixG(circuit c) {
+    //an n x n sparse matrix
+    Matrix matrixG = new SparseMatrix(c.GetNodeCount(), c.GetNodeCount()) 
+
+    //the process is repeated for every element in the circuit
+    foreach (element in circuit.GetEnumerator()) {
+        
+        node1 = element.GetNodes(0)
+        node2 = element.GetNodes(1)
+        
+        //calculate the inductance, g, and then add it to the correct elements in the matrix
+        //switch on the first char of the element name - this is the type of element
+        switch(element.GetName()[0]) {       
+            //for a resistor
+            case "R":
+                //conductance, g, is 1/resistance
+                g = 1/element.GetValue("Resistance")
+
+                //if not connected to ground at all set respective off-diagonals
+                //for the node to the negative conductance
+                if (node1 != 0 && node2 != 0) {
+                    matrixG[node1 - 1, node2 - 1] += -g
+                    matrixG[node2 - 1, node1 - 1] += -g
+                } 
+                //if connected to ground add the approproate conductance to the diagonal
+                if (node1 != 0) {
+                    matrixG[node1 - 1, node1 - 1] += g
+                }
+                if (node2 != 0) {
+                    matrixG[node2 - 1, node2 - 1] += g
+                }
+                
+                break
+            
+            //for a capacitor
+            case "C":
+                //s is the laplace variable - see notes
+                g = s*element.GetValue("Capacitance")
+
+                //if not connected to ground at all set respective off-diagonals
+                //for the node to the negative conductance
+                if (node1 != 0 && node2 != 0) {
+                    matrixG[node1 - 1, node2 - 1] += -g
+                    matrixG[node2 - 1, node1 - 1] += -g
+                }      
+                //if connected to ground add the approproate conductance to the diagonal
+                if (node1 != 0) {
+                    matrixG[node1 - 1, node1 - 1] += g
+                }
+                if (node2 != 0) {
+                    matrixG[node2 - 1, node2 - 1] += g
+                }
+
+                break
+        end
+        
+        return matrixG
+        }
+    }
+}

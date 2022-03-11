@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+//using XCeed.Wfp.Toolkit;
 
 namespace NABLA.ui
 {
@@ -23,6 +24,11 @@ namespace NABLA.ui
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void TextBox_TextChanged()
+        {
+
         }
     }
 }
