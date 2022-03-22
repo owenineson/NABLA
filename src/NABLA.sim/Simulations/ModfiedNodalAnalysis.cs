@@ -117,7 +117,7 @@ namespace NABLA.sim
         private Matrix<double> buildMatrixG()
         {
             //assign an n by n sparse matrix, this is what we'll build
-            Matrix<double> matrix = Matrix<double>.Build.Sparse(_circuit.GetNodeCount() - 1, _circuit.GetNodeCount() - 1);
+            Matrix<double> matrix = Matrix<double>.Build.Sparse(_circuit.GetNodeCount(), _circuit.GetNodeCount());
 
             //iterate over every dictionary element describing components in the circuit
             foreach (KeyValuePair<string, Connector> element in _circuit.GetEntities())
@@ -400,7 +400,8 @@ namespace NABLA.sim
             Matrix<double> matrix = Matrix<double>.Build.Sparse((_circuit.GetNodeCount() + _numberCurrentUnknowns), (_circuit.GetNodeCount() + _numberCurrentUnknowns));
 
             //copy in the g matrix
-            for (int i = 0; i < _circuit.GetNodeCount(); i++)
+            //TODO: CHANGED HERE, SUB 1 FROM NODE COUNT
+            for (int i = 0; i < _circuit.GetNodeCount() - 1; i++)
             {
                 for (int q = 0; q < _numberCurrentUnknowns; q++)
                 {
@@ -456,6 +457,7 @@ namespace NABLA.sim
             _xMatrix = buildMatrixX();
             _zMatrix = buildMatrixZ();
             _aMatrix = buildMatrixA();
+            Console.WriteLine(_aMatrix.ToMatrixString());
             Matrix<double> matrix;
             matrix = _aMatrix.Inverse() * _zMatrix;
             return matrix;

@@ -1,0 +1,48 @@
+function buildMatrixA(Circuit c, SparseMatrix MatrixG, SparseMatrix matrixB, SparseMatrix matrixC, SparseMatrix matrixD) {
+    
+    n = c.GetNodeCount()
+    m = c.GetCurrentUnknownCount()
+
+    //an (m+n) x (m+n) matrix
+    SparseMatrix matrixA = new SparseMatrix((m+n), (m+n))
+    
+    for(i = 0; i < n; i++){
+        
+        for(j = 0; j < n; j++){
+        
+            matrixA[i, j] = MatrixG[i, j]
+        
+        }
+    }
+
+    if(m > 1){
+        for(i = 0; i < n; i++){
+            
+            for(j = 0; j < m; j++){
+                
+                matrixA[i, n+j] = MatrixB[i, j]
+                matrixA[n+j, i] = matrixC[j, i]
+            
+            }
+        }
+
+        for(i = 0; i < m; i++){
+
+            for(j = 0; j < m; j++){
+
+                matrixA[n+i, n+j] = matrixD[i, j] 
+
+            }
+        }
+    }
+
+    if(m == 1){
+        for(i = 0; i < n; i++){
+            matrixA[i, n] = matrixB[0, i]
+            matrixA[n, i] = matrixB[0, i]
+        }
+    }
+
+    return matrixA
+
+}

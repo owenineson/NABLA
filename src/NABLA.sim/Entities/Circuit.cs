@@ -139,7 +139,7 @@ namespace NABLA.sim
         /// <returns>An integer value for nodes</returns>
         public int GetNodeCount()
         {
-            return _nodes.Count;
+            return _nodes.Count - 1;
         }
 
         /// <summary>
