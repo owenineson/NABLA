@@ -11,42 +11,65 @@ namespace NABLA.sim
     /// <summary>
     /// A netlist describing a circuit
     /// </summary>
-    internal class Netlist
+    public class Netlist
     {
+        
+        // ***** Properties *****
+
         /// <summary>
-        /// The path at which the netlist is stored
+        /// true if netlist has been processed and is valid
         /// </summary>
-        private string _filePath;
+        private bool _isNetlistValid;
 
         /// <summary>
         /// Backing field for NetlistLineArray
         /// </summary>
-        private string[][] _netlistLineArray;
+        private string[][] _elementArray;
+        
         /// <summary>
         /// A Netlist split into lines and then by spaces
         /// </summary>
-        public string[][] NetlistLineArray
+        public string[][] ElementArray
         {
-            get { return _netlistLineArray; }
-            set { _netlistLineArray = value;}
+            //ensure that the netlist is valid before returning
+            get { 
+                if(_isNetlistValid == true){
+                    return _elementArray;
+                }
+                else{
+                    return null;
+                }
+             }
+            set { _elementArray = value;}
         }
 
-        //Establish a regex to filter comments (starts with * or ;) and surplus spice commands (starts with .)
-        //TODO: i dont think this should be stored here
-        Regex CommentFilterRegex = new Regex(@"[\*\;\.]");
 
-        //TODO: this is super messy and needs a load more validation, also this just defo shouldnt all be in the constructor
-        //TODO: could probably split validation and filtering out into another function just for the sake of modularity as well
-        //TODO: build in refrencing to the TypeDescriptions document
+        // ***** Constructors *****
+
         /// <summary>
         /// Creates a new instance of a netlist
         /// </summary>
-        /// <param name="FilePath">The path of a text netlist</param>
-        /// <exception cref="FileNotFoundException"></exception>
-        public Netlist(string FilePath)
+        public Netlist()
         {
-            _filePath = FilePath;
+            _isNetlistValid = false;
+        }
+        
+
+        // ***** Loaders *****
+
+        /// <summary>
+        /// Load a netlist from a text file path
+        /// </summary>
+        /// <param name="FilePath"></param>
+        /// <returns>True if succseful</returns>
+        /// <exception cref="FileNotFoundException"></exception>
+        public bool LoadNetlist(string FilePath)
+        {
             string[] FileArray;
+            
+            //Establish a regex to filter comments (starts with * or ;) and surplus spice commands (starts with .)
+            Regex CommentFilterRegex = new Regex(@"[\*\;\.]");
+
 
             try
             {
@@ -54,67 +77,118 @@ namespace NABLA.sim
             }
             catch (FileNotFoundException)
             {
-                //throw a general argument exception to handle invalid path
-                throw new FileNotFoundException("Could not find specfied file path");
+                Console.WriteLine("File path could not be found");
+                return false;
             }
-
+            catch (ArgumentException)
+            {
+                Console.WriteLine("Invalid file path");
+                return false;
+            }
 
             //Put all of the filtered and accepted lines into a list
             List<string> FilteredNetlist = new List<string>();
 
-            for (int NetlistArrayLine = 0; NetlistArrayLine < FileArray.Length; NetlistArrayLine++)
+            for (int ListLineNumber = 0; ListLineNumber < FileArray.Length - 1; ListLineNumber++)
             {
-                //if there is not a succsesful match then the line is added to the FilteredNetlist
-                if (!CommentFilterRegex.IsMatch(FileArray[NetlistArrayLine].Substring(0, 1)))
+                //implemented for catching invalid components
+                try
                 {
-                    FilteredNetlist.Add(FileArray[NetlistArrayLine]);
+                    //skip the line if its a comment
+                    if (CommentFilterRegex.IsMatch(FileArray[ListLineNumber].Substring(0, 1)))
+                    {
+                        continue;
+                    }
+
+                    //switch on the first charcter of the first item in each branch
+                    switch (FileArray[ListLineNumber].Substring(0, 1))
+                    {
+                        //RLCs all have the same basic footprint therefore can be checked together
+                        case "R" or "L" or "C":
+                            
+                            //quick error check for the write number of parameters in a branch
+                            //this is done by splitting the list by spaces then counting the length of the array returned
+                            if (FileArray[ListLineNumber].Split(" ").Length != 4)
+                            {
+                                throw new ArgumentException(String.Format("Invalid number of parameters on branch {0}. Should be 4", ListLineNumber + 1));
+                            }
+                            else
+                            {
+                                FilteredNetlist.Add(FileArray[ListLineNumber]);
+                            }
+                            break;
+
+                        //Independent Voltage source
+                        case "V":
+                            
+                            if (FileArray[ListLineNumber].Split(" ").Length != 4)
+                            {
+                                throw new ArgumentException(String.Format("Invalid number of parameters on branch {0}. Should be 4", ListLineNumber + 1));
+                            }
+                            else
+                            {
+                                FilteredNetlist.Add(FileArray[ListLineNumber]);
+                            }
+                            break;
+
+                        //independent current source
+                        case "I":
+                            
+                            if (FileArray[ListLineNumber].Split(" ").Length != 4)
+                            {
+                                throw new ArgumentException(String.Format("Invalid number of parameters on branch {0}. Should be 4", ListLineNumber + 1));
+                            }
+                            else
+                            {
+                                FilteredNetlist.Add(FileArray[ListLineNumber]);
+                            }
+                            break;
+
+                        default:
+                            throw new ArgumentException("Invalid element type");
+
+
+                    }
+                }
+                //more or less just to catch errors thrown by invalid lines, print with the error message
+                catch (ArgumentException e)
+                {
+                    Console.WriteLine(string.Format("Error on line {0}: {1}", ListLineNumber + 1, e.Message));
+                    return false;
                 }
             }
 
-            for (int ListLineNumber = 0; ListLineNumber < FilteredNetlist.Count; ListLineNumber++)
-            {
-                //switch on the first charcter of the first item in each branch
-                switch (FilteredNetlist[ListLineNumber].Substring(0, 1))
-                {
-                    //RLCs all have the same basic footprint therefore can be checked together
-                    case "R" or "L" or "C":
-                        //quick error check for the write number of parameters in a branch
-                        //this is done by splitting the list by spaces then counting the length of the array returned
-                        if (FilteredNetlist[ListLineNumber].Split(" ").Length != 4)
-                        {
-                            Console.WriteLine(String.Format("Invalid number of parameters on branch {0}. Should be 4", ListLineNumber));
-                            break;
-                        }
-                        break;
-
-                    //Independent Voltage source
-                    case "V":
-                        if (FilteredNetlist[ListLineNumber].Split(" ").Length != 4)
-                        {
-                            Console.WriteLine(String.Format("Invalid number of parameters on branch {0}. Should be 4", ListLineNumber));
-                            break;
-                        }
-                        break;
-                    
-                    //independent current source
-                    case "I":
-                        if (FilteredNetlist[ListLineNumber].Split(" ").Length != 4)
-                        {
-                            Console.WriteLine(String.Format("Invalid number of parameters on branch {0}. Should be 4", ListLineNumber));
-                            break;
-                        }
-                        break;
-                }
-            }
-
+            //split the lines by spaces to make processing easier
             String[][] SplitNetlistLines = new string[FilteredNetlist.Count()][];
             for (int i = 0; i < FilteredNetlist.Count; i++)
             {
                 SplitNetlistLines[i] = FilteredNetlist[i].Split(" ");
             }
 
-            NetlistLineArray = SplitNetlistLines;
+            _elementArray = SplitNetlistLines;
+            _isNetlistValid = true;
+            return true;
         }
 
+
+        // ***** Utilities *****
+
+        public override string ToString()
+        {
+            string formatNetlist = "";
+            
+            //iterate over the array and make a formatted string
+            for (int y = 0; y < _elementArray.Length; y++)
+            {
+                for (int x = 0; x < _elementArray[y].Length; x++)
+                {
+                    formatNetlist += _elementArray[y][x] + " ";
+                }
+                formatNetlist += "\n";
+            }
+
+            return formatNetlist;
+
+        }
     }
 }

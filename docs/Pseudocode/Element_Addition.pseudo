@@ -1,0 +1,45 @@
+function LoadFromNetlist(Netlist n){
+    NetlistArray = n.LineArray
+
+    foreach(element in NetlistArray){
+        
+        Connector newElement;
+
+        switch(element[0][0]){
+            
+            case("R"){
+                newElement = new Resistor(
+                    element[0],
+                    double(element[3]),
+                    new List { int(element[1]), int(element[2])}
+                )
+            }
+
+            case("L") {
+                newElement = new Inductor(
+                    element[0],
+                    double(element[3]),
+                    new List { int(element[1]), int(element[2])}
+                )
+            }
+
+            case("C") {
+                newElement = new Capacitor(
+                    element[0],
+                    double(element[3]),
+                    new List { int(element[1]), int(element[2])}
+                )
+            }
+
+            case("V") {
+                newElement = new VoltageSource(
+                    element[0],
+                    double(element[3]),
+                    new List { int(element[1]), int(element[2])}
+                )
+            }
+        }
+
+        circuit.Add(newElement)
+    }
+}

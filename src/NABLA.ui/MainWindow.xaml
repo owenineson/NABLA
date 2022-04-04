@@ -5,24 +5,41 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NABLA.ui"
         mc:Ignorable="d"
-        Title="Nabla" Height="450" Width="800" WindowStartupLocation="CenterScreen" WindowState="Maximized" Icon="Nabla_Symbol.png">
+        Title="Nabla" Height="450" Width="800" WindowStartupLocation="CenterScreen" WindowState="Normal" Icon="Nabla_Symbol.png">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="9*"/>
+            <ColumnDefinition Width="11*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="185*"/>
-            <RowDefinition Height="6*"/>
+            <RowDefinition Height="30*"/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
-        <StatusBar x:Name="StatusBar_MainStatus" Height="13" Margin="0,0,10.2,-0.2" VerticalAlignment="Bottom" MinWidth="800" Grid.Row="1"/>
-        <Menu x:Name="Menu_MasterControl" Height="18" VerticalAlignment="Top" MinWidth="800">
+        <StatusBar x:Name="StatusBar_MainStatus" Height="13" VerticalAlignment="Center" MinWidth="800" Grid.Row="1" Grid.ColumnSpan="2"/>
+        <Menu x:Name="Menu_MasterControl" Height="18" VerticalAlignment="Top" MinWidth="800" Grid.ColumnSpan="2">
             <MenuItem x:Name="MenuItem_MasterControl_File" Header=" File&#xD;&#xA;" Height="18" Width="40" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <MenuItem x:Name="MenuItem_MasterControl_Edit" Header="Edit" Height="18" Width="40"/>
             <MenuItem x:Name="MenuItem_MasterControl_View" Header="View" Height="18" Width="40"/>
             <MenuItem x:Name="MenuItem_MasterControl_Tools" Header="Tools" Height="18" Width="45"/>
             <MenuItem x:Name="MenuItem_MasterControl_Help" Header="Help" Height="18" Width="40"/>
         </Menu>
-        <ToolBar x:Name="ToolBar_MainToolBar" Margin="0,18,0,0" MinWidth="680" Height="27" VerticalAlignment="Top" Width="675" HorizontalAlignment="Right">
-            <Button Content="Button" VerticalAlignment="Stretch" Width="75" Margin="0,1,0,-1"/>
-        </ToolBar>
-        <ScrollViewer Margin="0,18,680,0"/>
+        <RichTextBox x:Name="RichTextBox_NetlistInput" Margin="10,49,50,10">
+            <FlowDocument>
+                <Paragraph>
+                    <Run Text="RichTextBox"/>
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+        <RichTextBox x:Name="RichTextBox_Output" Margin="40,119,80,10" Grid.Column="1">
+            <FlowDocument>
+                <Paragraph>
+                    <Run Text="RichTextBox"/>
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+        <Label x:Name="DecorativeLabel_NetlistInput" Content="Netlist Input -&#xD;&#xA;" Height="26" Margin="7,23,223,0" VerticalAlignment="Top"/>
+        <Label Content="Output -" HorizontalAlignment="Left" Height="30" Margin="37,93,0,0" VerticalAlignment="Top" Width="65" Grid.Column="1"/>
+        <Button Content="Run Analysis" HorizontalAlignment="Left" Height="25" Margin="40,49,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" Grid.Column="1"/>
     </Grid>
 
 </Window>

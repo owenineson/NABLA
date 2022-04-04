@@ -74,7 +74,7 @@ namespace NABLA.sim
         /// <param name="Value">The value to set the parameter too</param>
         /// <returns>True if succseful</returns>
         public bool TrySetParameter(string Parameter, double Value)
-        {
+        {   
             if (_parameters.ContainsKey(Parameter))
             {
                 return true;

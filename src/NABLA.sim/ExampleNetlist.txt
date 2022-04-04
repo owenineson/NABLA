@@ -5,4 +5,4 @@ R2 001 003 4
 R3 001 0 8
 .backanno
 .end
-.swathmore_case_1
+.swarthmore_case_1

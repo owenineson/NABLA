@@ -9,6 +9,9 @@ namespace NABLA.sim
 {
     public class Circuit
     {
+        
+        // ***** Properties *****
+
         /// <summary>
         /// The base data structure within which each entity can be stored
         /// </summary>
@@ -24,13 +27,10 @@ namespace NABLA.sim
         /// <summary>
         /// A list of all the nodes in the circuit
         /// </summary>
-        private List<int> _nodes = new List<int>();
-        
-        /// <summary>
-        /// Nodes as abstracted numbers
-        /// </summary>
-        private List<int> _intNodes = new List<int>();
+        private List<int> _nodes = new List<int>();     
 
+
+        // ***** Constructors *****
 
         /// <summary>
         /// Create a new instance of a circuit, used for holding connectors
@@ -52,6 +52,9 @@ namespace NABLA.sim
                 this.Add(item);
 ;           }
         }
+
+
+        // ***** Element Modifying *****
 
         /// <summary>
         /// Add a new connector to the circuit
@@ -85,42 +88,64 @@ namespace NABLA.sim
         }
 
         /// <summary>
-        /// Remove a connector from the circuit
+        /// Load elements into a circuit from a netlsit
         /// </summary>
-        /// <param name="item">The connector to remove</param>
-        /// <returns>True if the operation is succsesful</returns>
-        public bool Remove(Connector item)
+        /// <param name="netlist">The netlist to load from</param>
+        /// <returns>True if succseful</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public bool LoadFromNetlist(Netlist netlist)
         {
-            try
+            if (netlist == null)
             {
-                _entities.Remove(item.GetName());
-            }
-            catch (ArgumentNullException)
-            {
+                throw new ArgumentNullException("Netlist is invalid");
                 return false;
+            }
+            
+            
+            foreach (string[] item in netlist.ElementArray)
+            {
+                //we're swtiching on the first char as this signifies the type
+                switch (item[0].Substring(0, 1))
+                {
+                    case "R":
+                        Add(
+                            new Resistor(item[0],
+                            Convert.ToDouble(item[3]),
+                            new List<int>()
+                            {
+                                Int32.Parse(item[1]),
+                                Int32.Parse(item[2])
+                            }));
+                        break;     
+                    case "V":
+                        Add(
+                            new IndependentSource(item[0],
+                            Convert.ToDouble(item[3]),
+                            new List<int>()
+                            {
+                                Int32.Parse(item[1]),
+                                Int32.Parse(item[2])
+                            }));
+                        break;
+                    
+                    //no fall through at the moment, shouldn't be nessecary for safe operation
+                    default:
+                        break;
+                }
             }
             return true;
         }
 
+
+        // ***** Utility Accessors *****
+
         /// <summary>
-        /// Load a group of connectors at once
+        /// Get the list of nodes in the circuit
         /// </summary>
-        /// <param name="Elements">A list of connectors</param>
-        /// <returns>True if the operation is succsesful</returns>
-        public bool LoadElements(List<Connector> Elements)
+        /// <returns>A List of strings naming each node</returns>
+        public List<int> GetNodes()
         {
-            foreach (Connector item in Elements)
-            {
-                try
-                {
-                    _entities.Add(item.GetName(), item);
-                }
-                catch (ArgumentException)
-                {
-                    return false;
-                }
-            }
-            return true;
+            return _nodes;
         }
 
         /// <summary>
@@ -142,14 +167,8 @@ namespace NABLA.sim
             return _nodes.Count - 1;
         }
 
-        /// <summary>
-        /// Get the list of nodes in the circuit
-        /// </summary>
-        /// <returns>A List of strings naming each node</returns>
-        public List<int> GetNodes()
-        {
-            return _nodes;
-        }
+
+        // ***** Utilities *****
 
         /// <summary>
         /// Return an enumerable dictionary of connectors
@@ -158,11 +177,6 @@ namespace NABLA.sim
         public Dictionary<string, Connector>.Enumerator GetEnumerator()
         {
             return _entities.GetEnumerator();
-        }
-
-        public Dictionary<string, Connector> GetEntities()
-        {
-            return _entities;
         }
 
     }

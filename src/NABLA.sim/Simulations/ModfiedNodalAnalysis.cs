@@ -18,8 +18,7 @@ namespace NABLA.sim
         /// </summary>
         private Circuit _circuit;
 
-        //***** All of the matricies needed - spoiler, its quite a few *****
-        //TODO: some of these can get tidied away along with their builders into other builders
+        //***** Matricies *****
 
         /// <summary>
         /// An n by n matrix describing connections of resistors, capacitors, and vccs elements
@@ -120,7 +119,7 @@ namespace NABLA.sim
             Matrix<double> matrix = Matrix<double>.Build.Sparse(_circuit.GetNodeCount(), _circuit.GetNodeCount());
 
             //iterate over every dictionary element describing components in the circuit
-            foreach (KeyValuePair<string, Connector> element in _circuit.GetEntities())
+            foreach (KeyValuePair<string, Connector> element in _circuit)
             {
                 int node1 = element.Value.GetNodes()[0];
                 int node2 = element.Value.GetNodes()[1];
@@ -178,7 +177,7 @@ namespace NABLA.sim
 
             int _sourceNumber = 0;
 
-            foreach (KeyValuePair<string, Connector> element in _circuit.GetEntities())
+            foreach (KeyValuePair<string, Connector> element in _circuit)
             {
                 int node1 = element.Value.GetNodes()[0];
                 int node2 = element.Value.GetNodes()[1];
@@ -239,7 +238,7 @@ namespace NABLA.sim
 
             int _sourceNumber = 0;
 
-            foreach (KeyValuePair<string, Connector> element in _circuit.GetEntities())
+            foreach (KeyValuePair<string, Connector> element in _circuit)
             {
                 int node1 = element.Value.GetNodes()[0];
                 int node2 = element.Value.GetNodes()[1];
@@ -302,7 +301,7 @@ namespace NABLA.sim
 
             int _sourceNumber = 0;
 
-            foreach (KeyValuePair<string, Connector> element in _circuit.GetEntities())
+            foreach (KeyValuePair<string, Connector> element in _circuit)
             {
                 int node1 = element.Value.GetNodes()[0];
                 int node2 = element.Value.GetNodes()[1];
@@ -340,7 +339,7 @@ namespace NABLA.sim
             Matrix<double> matrixEv = Matrix<double>.Build.Sparse(_numberCurrentUnknowns, 1);
 
             //start with the I matrix
-            foreach (KeyValuePair<string, Connector> element in _circuit.GetEntities())
+            foreach (KeyValuePair<string, Connector> element in _circuit)
             {
                 int node1 = element.Value.GetNodes()[0];
                 int node2 = element.Value.GetNodes()[1];
@@ -362,7 +361,7 @@ namespace NABLA.sim
 
             //now the Ev matrix
             int _sourceNumber = 0;
-            foreach (KeyValuePair<string, Connector> element in _circuit.GetEntities())
+            foreach (KeyValuePair<string, Connector> element in _circuit)
             {
                 int node1 = element.Value.GetNodes()[0];
                 int node2 = element.Value.GetNodes()[1];
@@ -458,9 +457,8 @@ namespace NABLA.sim
             _zMatrix = buildMatrixZ();
             _aMatrix = buildMatrixA();
             Console.WriteLine(_aMatrix.ToMatrixString());
-            Matrix<double> matrix;
-            matrix = _aMatrix.Inverse() * _zMatrix;
-            return matrix;
+            _xMatrix = _aMatrix.Inverse() * _zMatrix;
+            return _xMatrix;
         }
     }
 }
