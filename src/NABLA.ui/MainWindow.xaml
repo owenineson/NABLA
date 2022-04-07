@@ -17,29 +17,21 @@
         </Grid.RowDefinitions>
         <StatusBar x:Name="StatusBar_MainStatus" Height="13" VerticalAlignment="Center" MinWidth="800" Grid.Row="1" Grid.ColumnSpan="2"/>
         <Menu x:Name="Menu_MasterControl" Height="18" VerticalAlignment="Top" MinWidth="800" Grid.ColumnSpan="2">
-            <MenuItem x:Name="MenuItem_MasterControl_File" Header=" File&#xD;&#xA;" Height="18" Width="40" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <MenuItem x:Name="MenuItem_MasterControl_Edit" Header="Edit" Height="18" Width="40"/>
-            <MenuItem x:Name="MenuItem_MasterControl_View" Header="View" Height="18" Width="40"/>
-            <MenuItem x:Name="MenuItem_MasterControl_Tools" Header="Tools" Height="18" Width="45"/>
-            <MenuItem x:Name="MenuItem_MasterControl_Help" Header="Help" Height="18" Width="40"/>
+            <MenuItem x:Name="MenuItem_MasterControl_File" Header=" File" Height="18" Width="40" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <MenuItem x:Name="MenuItem_MasterControl_File_Save" Header="Save" Click="MenuItem_MasterControl_File_Save_Clicked"/>
+                <MenuItem x:Name="MenuItem_MasterControl_File_Open" Header="Open" Click="MenuItem_MasterControl_File_Open_Clicked"/>
+            </MenuItem>
+            <MenuItem x:Name="MenuItem_MasterControl_Help" Header="Help" Height="18" Width="40">
+                <MenuItem x:Name="MenuItem_MasterControl_Help_ShowHelp" Header="Show Help"/>
+            </MenuItem>
         </Menu>
-        <RichTextBox x:Name="RichTextBox_NetlistInput" Margin="10,49,50,10">
-            <FlowDocument>
-                <Paragraph>
-                    <Run Text="RichTextBox"/>
-                </Paragraph>
-            </FlowDocument>
-        </RichTextBox>
-        <RichTextBox x:Name="RichTextBox_Output" Margin="40,119,80,10" Grid.Column="1">
-            <FlowDocument>
-                <Paragraph>
-                    <Run Text="RichTextBox"/>
-                </Paragraph>
-            </FlowDocument>
+        <RichTextBox x:Name="RichTextBox_NetlistInput" Margin="10,49,50,10" BorderBrush="#FF7C7C7C">
+            <FlowDocument/>
         </RichTextBox>
         <Label x:Name="DecorativeLabel_NetlistInput" Content="Netlist Input -&#xD;&#xA;" Height="26" Margin="7,23,223,0" VerticalAlignment="Top"/>
-        <Label Content="Output -" HorizontalAlignment="Left" Height="30" Margin="37,93,0,0" VerticalAlignment="Top" Width="65" Grid.Column="1"/>
-        <Button Content="Run Analysis" HorizontalAlignment="Left" Height="25" Margin="40,49,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" Grid.Column="1"/>
+        <Label x:Name="DecorativeLabel_Output" Content="Output -" HorizontalAlignment="Left" Height="30" Margin="37,76,0,0" VerticalAlignment="Top" Width="65" Grid.Column="1"/>
+        <Button x:Name="Button_RunAnalysis" Content="Run Analysis" HorizontalAlignment="Left" Height="25" Margin="40,49,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" Grid.Column="1" Cursor=""/>
+        <TextBox x:Name="TextBox_Output" Grid.Column="1" HorizontalAlignment="Left" Margin="40,98,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="295" Height="312" BorderBrush="#FF787878"/>
     </Grid>
 
 </Window>

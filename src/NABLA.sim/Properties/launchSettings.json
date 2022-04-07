@@ -6,6 +6,10 @@
     "NABLA.sim file in args": {
       "commandName": "Project",
       "commandLineArgs": "-f \"\"C:\\\\Users\\\\owen\\\\Documents\\\\NABLA\\\\src\\\\NABLA.sim\\\\ExampleNetlist.txt\"\""
+    },
+    "NABLA.sim pipe": {
+      "commandName": "Project",
+      "commandLineArgs": "-p \"NABLApipe\""
     }
   }
 }

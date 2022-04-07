@@ -95,7 +95,7 @@ namespace NABLA.sim
         /// <exception cref="ArgumentNullException"></exception>
         public bool LoadFromNetlist(Netlist netlist)
         {
-            if (netlist == null)
+            if (netlist == null || netlist.ElementArray == null)
             {
                 throw new ArgumentNullException("Netlist is invalid");
                 return false;

@@ -85,6 +85,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Pipes\PipeClient.cs" />
+    <Compile Include="Pipes\PipeServer.cs" />
+    <Compile Include="Pipes\Protocols\StreamString.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
