@@ -12,14 +12,24 @@ namespace NABLA.sim
     /// </summary>
     public class ModfiedNodalAnalysis
     {
+        
+        //***** Properties *****
 
         /// <summary>
         /// The circuit upon which the analysis is being performed
         /// </summary>
         private Circuit _circuit;
 
-        //***** All of the matricies needed - spoiler, its quite a few *****
-        //TODO: some of these can get tidied away along with their builders into other builders
+        /// <summary>
+        /// Backing field for the formatted result from the analysis
+        /// </summary>
+        private string _result;
+        /// <summary>
+        /// Formatted result from the analysis
+        /// </summary>
+        public string Result { get { return _result; } }
+
+        //***** Matricies *****
 
         /// <summary>
         /// An n by n matrix describing connections of resistors, capacitors, and vccs elements
@@ -117,10 +127,10 @@ namespace NABLA.sim
         private Matrix<double> buildMatrixG()
         {
             //assign an n by n sparse matrix, this is what we'll build
-            Matrix<double> matrix = Matrix<double>.Build.Sparse(_circuit.GetNodeCount() - 1, _circuit.GetNodeCount() - 1);
+            Matrix<double> matrix = Matrix<double>.Build.Sparse(_circuit.GetNodeCount(), _circuit.GetNodeCount());
 
             //iterate over every dictionary element describing components in the circuit
-            foreach (KeyValuePair<string, Connector> element in _circuit.GetEntities())
+            foreach (KeyValuePair<string, Connector> element in _circuit)
             {
                 int node1 = element.Value.GetNodes()[0];
                 int node2 = element.Value.GetNodes()[1];
@@ -140,7 +150,7 @@ namespace NABLA.sim
                         break;
                 }
 
-                //TODO: document this all
+                //switching on the first char as this signifies the type
                 switch (element.Key[0])
                 {
                     case 'R':
@@ -178,24 +188,26 @@ namespace NABLA.sim
 
             int _sourceNumber = 0;
 
-            foreach (KeyValuePair<string, Connector> element in _circuit.GetEntities())
+            //enumerate over each circuit element
+            foreach (KeyValuePair<string, Connector> element in _circuit)
             {
                 int node1 = element.Value.GetNodes()[0];
                 int node2 = element.Value.GetNodes()[1];
 
-                //TODO: document this all
+                //switch on first char as this is element type
                 switch (element.Key[0])
                 {
+                    //voltage source
                     case 'V':
                         if (_numberCurrentUnknowns > 1)
                         {
                             if (node1 != 0)
                             {
-                                matrix[node1 - 1, _sourceNumber] = 1;
+                                matrix[node1 - 1, _sourceNumber] = -1;
                             }
-                            else if (node2 != 0)
+                            if (node2 != 0)
                             {
-                                matrix[node2 - 1, _sourceNumber] = -1;
+                                matrix[node2 - 1, _sourceNumber] = 1;
                             }
                             _sourceNumber++;
                             break;  
@@ -206,14 +218,14 @@ namespace NABLA.sim
                             {
                                 for (int i = 0; i < _numberCurrentUnknowns; i++)
                                 {
-                                    matrix[node1 - 1, i] = 1;
+                                    matrix[node1 - 1, i] = -1;
                                 }
                             }
-                            else if (node2 != 0)
+                            if (node2 != 0)
                             {
                                 for (int i = 0; i < _numberCurrentUnknowns; i++)
                                 {
-                                    matrix[node2 - 1, i] = -1;
+                                    matrix[node2 - 1, i] = 1;
                                 }
                             }
                             _sourceNumber++;
@@ -235,16 +247,18 @@ namespace NABLA.sim
         private Matrix<double> buildMatrixC()
         {
             //assign an n by m (number of unknown currents) matrix to build into
-            Matrix<double> matrix = Matrix<double>.Build.Sparse(_circuit.GetNodeCount(), _numberCurrentUnknowns);
+            Matrix<double> matrix = Matrix<double>.Build.Sparse(_numberCurrentUnknowns, _circuit.GetNodeCount());
 
+            //needed to get the correct matrix index
             int _sourceNumber = 0;
 
-            foreach (KeyValuePair<string, Connector> element in _circuit.GetEntities())
+            //enumerate over each element in circuit
+            foreach (KeyValuePair<string, Connector> element in _circuit)
             {
                 int node1 = element.Value.GetNodes()[0];
                 int node2 = element.Value.GetNodes()[1];
 
-                //TODO: document this all
+                //switch on first char as this is element type
                 switch (element.Key[0])
                 {
                     case 'V':
@@ -252,11 +266,11 @@ namespace NABLA.sim
                         {
                             if (node1 != 0)
                             {
-                                matrix[node1 - 1, _sourceNumber] = 1;
+                                matrix[_sourceNumber, node1 - 1] = -1;
                             }
-                            else if (node2 != 0)
+                            if (node2 != 0)
                             {
-                                matrix[_sourceNumber, node2 - 1] = -1;
+                                matrix[_sourceNumber, node2 - 1] = 1;
                             }
                             _sourceNumber++;
                             break;
@@ -267,20 +281,19 @@ namespace NABLA.sim
                             {
                                 for (int i = 0; i < _numberCurrentUnknowns; i++)
                                 {
-                                    matrix[node1 - 1, i] = 1;
+                                    matrix[i, node1 - 1] = -1;
                                 }
                             }
-                            else if (node2 != 0)
+                            if (node2 != 0)
                             {
                                 for (int i = 0; i < _numberCurrentUnknowns; i++)
                                 {
-                                    matrix[node2 - 1, i] = -1;
+                                    matrix[i, node2 - 1] = 1;
                                 }
                             }
                             _sourceNumber++;
                             break;
                         }
-                    //TODO: add all the other source types
                     default:
                         break;
 
@@ -298,15 +311,16 @@ namespace NABLA.sim
             //assign an m by m matrix that we'll build into
             Matrix<double> matrix = Matrix<double>.Build.Sparse(_numberCurrentUnknowns, _numberCurrentUnknowns);
 
-            //TODO: gotta sort inductors and the whole laplace variable thing
 
             int _sourceNumber = 0;
 
-            foreach (KeyValuePair<string, Connector> element in _circuit.GetEntities())
+            //enumerate over each circuit element
+            foreach (KeyValuePair<string, Connector> element in _circuit)
             {
                 int node1 = element.Value.GetNodes()[0];
                 int node2 = element.Value.GetNodes()[1];
 
+                //switch on first char, the element type
                 switch (element.Key[0])
                 {
                     case 'V':
@@ -326,6 +340,7 @@ namespace NABLA.sim
         /// <returns>An (m + n) by 1 sparse matrix of doubles</returns>
         private Matrix<double> buildMatrixX()
         {
+            //this matrix is empty just needs to be sized correctly for the circuit
             Matrix<double> matrix = Matrix<double>.Build.Sparse((_circuit.GetNodeCount() + _numberCurrentUnknowns), 1);
             return matrix;
         }
@@ -336,11 +351,12 @@ namespace NABLA.sim
         /// <returns>An (m + n) by 1 sparse matrix of doubles</returns>
         private Matrix<double> buildMatrixZ()
         {
+            //two matricies get built, they then get combined into z
             Matrix<double> matrixI = Matrix<double>.Build.Sparse(_circuit.GetNodeCount(), 1);
             Matrix<double> matrixEv = Matrix<double>.Build.Sparse(_numberCurrentUnknowns, 1);
 
             //start with the I matrix
-            foreach (KeyValuePair<string, Connector> element in _circuit.GetEntities())
+            foreach (KeyValuePair<string, Connector> element in _circuit)
             {
                 int node1 = element.Value.GetNodes()[0];
                 int node2 = element.Value.GetNodes()[1];
@@ -350,19 +366,19 @@ namespace NABLA.sim
                     if (node1 != 0)
                     {
                         //TODO: this is not the right parameter refrence but idk what to put sooo...
-                        matrixI[node1 - 1, 0] += -element.Value.GetParameter("Value");
+                        matrixI[node1 - 1, 0] += -element.Value.GetParameter("Inductance");
                     }
                     else if (node2 != 0)
                     {
                         //TODO: same as above - this is not the right parameter refrence but idk what to put sooo...
-                        matrixI[node2 - 1, 0] += element.Value.GetParameter("Value");
+                        matrixI[node2 - 1, 0] += element.Value.GetParameter("Inductance");
                     }
                 }
             }
 
             //now the Ev matrix
             int _sourceNumber = 0;
-            foreach (KeyValuePair<string, Connector> element in _circuit.GetEntities())
+            foreach (KeyValuePair<string, Connector> element in _circuit)
             {
                 int node1 = element.Value.GetNodes()[0];
                 int node2 = element.Value.GetNodes()[1];
@@ -371,10 +387,11 @@ namespace NABLA.sim
                 {
                     matrixEv[_sourceNumber, 0] = element.Value.GetParameter("Voltage");
                 }
+                _sourceNumber++;
             }
 
             // And then combine the two together
-            //TODO: i think this works...
+            //TODO: i think this works... edit, this works
 
             Matrix<double> matrixZ = Matrix<double>.Build.Sparse((_circuit.GetNodeCount() + _numberCurrentUnknowns), 1);
 
@@ -402,9 +419,10 @@ namespace NABLA.sim
             //copy in the g matrix
             for (int i = 0; i < _circuit.GetNodeCount(); i++)
             {
-                for (int q = 0; q < _numberCurrentUnknowns; q++)
+                for (int q = 0; q < _circuit.GetNodeCount(); q++)
                 {
                     matrix[i, q] = _gMatrix[i, q];
+                    Console.WriteLine(_gMatrix[i, q]);
                 }
             }
 
@@ -417,7 +435,7 @@ namespace NABLA.sim
                     for (int q = 0; q < _numberCurrentUnknowns; q++)
                     {
                         matrix[i, _circuit.GetNodeCount() + q] = _bMatrix[i, q];
-                        matrix[_circuit.GetNodeCount() + q, i] = _cMatrix[i, q];
+                        matrix[_circuit.GetNodeCount() + q, i] = _cMatrix[q, i];
                     }
                 }
 
@@ -448,6 +466,7 @@ namespace NABLA.sim
         /// <returns>An (m + n) by 1 sparse matrix of doubles holding solved for values</returns>
         public Matrix<double> Solve()
         {
+            //get everything in order first, the order does matter as well
             GetElementCounts();
             _gMatrix = buildMatrixG();
             _bMatrix = buildMatrixB();
@@ -456,9 +475,24 @@ namespace NABLA.sim
             _xMatrix = buildMatrixX();
             _zMatrix = buildMatrixZ();
             _aMatrix = buildMatrixA();
-            Matrix<double> matrix;
-            matrix = _aMatrix.Inverse() * _zMatrix;
-            return matrix;
+
+            //this is the actual solvey bit - not that impressive really
+            _xMatrix = _aMatrix.Inverse() * _zMatrix;
+            
+            //clear out the result
+            _result = "";
+
+            //go over and add some labels will sticking the value in the result variable
+            for (int i = 0; i < _numberCurrentUnknowns; i++)
+            {
+                _result += "Source " + i + ": " + Math.Round(_xMatrix[i, 0], 4) + "A\n"; 
+            }
+            for (int i = 0; i < _circuit.GetNodeCount(); i++)
+            {
+                _result += "Node " + i + ": " + Math.Round(_xMatrix[i + _numberCurrentUnknowns, 0], 4) + "v\n";
+            }
+
+            return _xMatrix;
         }
     }
 }

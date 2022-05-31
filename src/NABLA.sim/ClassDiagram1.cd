@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="NABLA.sim.Connector" Collapsed="true">
+    <Position X="3.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgQIBAEAAAAAAQAAAAAAAAAAAAAAAAAAIARAAAABAA=</HashCode>
+      <FileName>Connectors\Connector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NABLA.sim.CurrentControlledSource" Collapsed="true">
+    <Position X="2.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Connectors\CurrentControlledSource.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NABLA.sim.IndependentSource" Collapsed="true">
+    <Position X="5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Connectors\IndependentSource.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NABLA.sim.Resistor" Collapsed="true">
+    <Position X="7.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Connectors\Resistor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NABLA.sim.VoltageControlledSource" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Connectors\VoltageControlledSource.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NABLA.sim.Circuit" Collapsed="true">
+    <Position X="9.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AA4AABAAAABIABAAAAAAAQAAAAAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>Entities\Circuit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NABLA.sim.Netlist" Collapsed="true">
+    <Position X="13.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACABAAEAAAACAgAAAAAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>Entities\Netlist.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NABLA.sim.ParameterSet" Collapsed="true">
+    <Position X="9.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAQAEAAAAAEAAAAAAAAAAAAAAABAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>Parameters\ParameterSet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NABLA.sim.StreamString" Collapsed="true">
+    <Position X="9.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAAEAQAAAAAAAAAAAAE=</HashCode>
+      <FileName>Pipes\Protocols\StreamString.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NABLA.sim.PipeClient" Collapsed="true">
+    <Position X="11.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAEAAAAAAAAAAABAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>Pipes\PipeClient.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NABLA.sim.ModfiedNodalAnalysis">
+    <Position X="7" Y="2.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAACAYAAAACAAIAACQIAgEAAACAABUAAAAgEBA=</HashCode>
+      <FileName>Simulations\ModfiedNodalAnalysis.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NABLA.sim.Program" Collapsed="true">
+    <Position X="13.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAACAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

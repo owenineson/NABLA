@@ -1,0 +1,53 @@
+function buildMatrixZ(circuit c){
+
+    //an n x 1 matrix holding current source values
+    Matrix matrixI = new SparseMatrix(c.GetNodeCount(), 1)
+    //an m x 1 matrix holding voltage source values
+    Matrix matrixE = new SparseMatrix(c.GetCurrentUnknownCount(), 1)
+    //an (n + m) x 1 matrix combining matrix I and E together
+    Matrix matrixZ = new SparseMatrix((c.GetNodeCount() + c.GetCurrentUnknownCount()), 1)
+
+    //this is used to put voltage sources in their correct elements
+    sourceNumber = 0
+
+    //the matricies can be built simultanously by stiching on I or V
+    foreach (element in c.GetEnumerator()){
+        switch element.GetName()[0]{
+            case "I":
+
+                node1 = element.GetNodes(0)
+                node2 = element.GetNodes(1)
+
+                g = element.GetValue("Current")
+                
+                //sum the values of current into the respective matrix elements
+                if(node1 != 0){
+                    matrixI[node1 - 1] += -g
+                }
+                
+                if(node2 != 0){
+                    matrixI[node2 - 1] += g
+                }
+                
+                break
+
+            case "V":
+                
+                matrixE[sourceNumber] += element.GetValue("Voltage")
+                sourceNumber++
+                
+                break    
+        }        
+    }
+
+    //assemble the two matricies
+    for(i = 0; i < c.GetNodeCount(); i++){
+        matrixZ[i, 0] = matrixI[i, 0] 
+    }
+    for(i = 0; i < c.GetCurrentUnknownCount(); i++){
+        matrixZ[c.GetNodeCount() + i, 0] = matrixE[i, 0]
+    }
+
+    return matrixZ
+
+}

@@ -1,0 +1,6 @@
+function solveMNA(Matrix matrixA, Matrix matrixZ){
+    
+    matrix = matrixA.Inverse() * matrixZ
+
+    return matrix
+}

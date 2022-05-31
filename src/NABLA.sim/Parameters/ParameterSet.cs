@@ -61,20 +61,18 @@ namespace NABLA.sim
         /// <param name="Parameter">A string naming the parameter</param>
         /// <param name="Value">The value to set the parameter too</param>
         /// <returns>True if succsesful</returns>
-        public bool SetParameter(string Parameter, double Value)
+        public void SetParameter(string Parameter, double Value)
         {
             _parameters[Parameter] = Value;
-            return true;
         }
 
         /// <summary>
         /// Try set a parameter value
         /// </summary>
         /// <param name="Parameter">A string naming the parameter</param>
-        /// <param name="Value">The value to set the parameter too</param>
         /// <returns>True if succseful</returns>
-        public bool TrySetParameter(string Parameter, double Value)
-        {
+        public bool TrySetParameter(string Parameter)
+        {   
             if (_parameters.ContainsKey(Parameter))
             {
                 return true;

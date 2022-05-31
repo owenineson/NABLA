@@ -1,0 +1,5 @@
+function buildMatrixD(circuit c){
+    Matrix matrixD = new SparseMatrix(c.GetNodeCount(), c.GetNodeCount())
+
+    return matrixC
+}
